@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebtView — Controle de Dívidas</title>
+  <!-- ═══ FAVICONS & PWA ══════════════════════════════ -->
+  <link rel="icon"             type="image/x-icon"       href="icons/favicon.ico" />
+  <link rel="icon"             type="image/png" sizes="16x16"  href="icons/favicon-16x16.png" />
+  <link rel="icon"             type="image/png" sizes="32x32"  href="icons/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180"            href="icons/apple-touch-icon.png" />
+  <link rel="icon"             type="image/png" sizes="192x192" href="icons/android-chrome-192x192.png" />
+  <link rel="icon"             type="image/png" sizes="512x512" href="icons/android-chrome-512x512.png" />
+  <link rel="manifest"                                    href="icons/site.webmanifest" />
+  <meta name="theme-color" content="#0d0d0f" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══ HEADER ═══════════════════════════════════════ -->
+<header>
+  <div class="logo">Debt<span>View</span></div>
+  <div class="header-right">
+    <a href="historico.html" class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      Dívidas Pagas
+    </a>
+    <button class="btn btn-ghost" onclick="openModal('dataModal')" title="Exportar / Importar dados">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Dados
+    </button>
+    <button class="btn btn-primary" onclick="openModal_add()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nova Dívida
+    </button>
+  </div>
+</header>
+
+<!-- ═══ MOBILE BOTTOM NAV ════════════════════════════ -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="historico.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      Pagas
+    </a>
+    <button class="mobile-nav-btn primary" onclick="openModal_add()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nova
+    </button>
+    <button class="mobile-nav-btn" onclick="openModal('dataModal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Dados
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ══════════════════════════════════════════ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-label">▸ Total em dívidas</div>
+    <div class="hero-total" id="heroTotal">R$ 0,00</div>
+    <div class="hero-sub" id="heroSub">Nenhuma dívida cadastrada</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Dívidas Ativas</div>
+      <div class="stat-value red" id="statAtivas">0</div>
+      <button class="stat-action" onclick="openListModal()">
+        Ver quais são
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Parcela Mensal Total</div>
+      <div class="stat-value amber" id="statMensal">R$ 0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Maior Credor</div>
+      <div class="stat-value accent" id="statMaior" style="font-size:22px;margin-top:6px;">—</div>
+    </div>
+  </div>
+
+  <!-- DEBT LIST -->
+  <div class="section-header">
+    <div class="section-title">Suas Dívidas</div>
+    <button class="btn btn-ghost" onclick="openModal_add()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Adicionar
+    </button>
+  </div>
+
+  <div class="debt-list" id="debtList">
+    <div class="empty-state">
+      <div class="empty-state-icon">💳</div>
+      <h3>Nenhuma dívida cadastrada</h3>
+      <p>Clique em "Nova Dívida" para começar a controlar suas finanças.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ MODAL — ADICIONAR DÍVIDA ══════════════════════ -->
+<div class="overlay" id="addModal" onclick="closeOnBackdrop(event, 'addModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="addModalTitle">Nova Dívida</div>
+      <button class="icon-btn" onclick="closeModal('addModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="debtForm" onsubmit="submitDebtForm(event)">
+        <div class="form-grid">
+
+          <div class="form-field full">
+            <label>Tipo de Dívida <span class="required-dot">*</span></label>
+            <select id="fTipo" required>
+              <option value="">Selecione...</option>
+              <option value="Cartão de Crédito">💳 Cartão de Crédito</option>
+              <option value="Empréstimo Pessoal">💰 Empréstimo Pessoal</option>
+              <option value="Financiamento">🏠 Financiamento</option>
+              <option value="Cheque Especial">🏦 Cheque Especial</option>
+              <option value="Crédito Consignado">📑 Crédito Consignado</option>
+              <option value="CDC">🚗 CDC / Financiamento Veículo</option>
+              <option value="Dívida Pessoal">🤝 Dívida Pessoal</option>
+              <option value="Boleto/Parcelamento">📄 Boleto / Parcelamento</option>
+              <option value="Outro">🔖 Outro</option>
+            </select>
+          </div>
+
+          <div class="form-field full">
+            <label>Como os juros funcionam? <span class="required-dot">*</span></label>
+            <select id="fModalidade" required onchange="atualizarHintModalidade()">
+              <option value="">Selecione...</option>
+              <option value="parcelado">📦 Parcelamento contratado — parcelas fixas, juros já embutidos</option>
+              <option value="rotativo">🔄 Rotativo — juros cobrados todo mês sobre o saldo</option>
+              <option value="simples">📄 Dívida simples — sem juros, só o valor</option>
+            </select>
+            <span class="form-hint" id="modalidadeHint"></span>
+          </div>
+
+          <div class="form-field full">
+            <label>Credor <span class="required-dot">*</span></label>
+            <input type="text" id="fCredor" placeholder="Ex: Nubank, Banco Itaú, João..." required />
+          </div>
+
+          <div class="form-field">
+            <label>Valor Total <span class="required-dot">*</span></label>
+            <input type="number" id="fValorTotal" placeholder="0,00" min="0.01" step="0.01" required />
+          </div>
+
+          <div class="form-field">
+            <label>Valor da Parcela</label>
+            <input type="number" id="fParcela" placeholder="0,00" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field" id="fieldJuros">
+            <label>Taxa de Juros (% a.m.)</label>
+            <input type="number" id="fJuros" placeholder="Ex: 2,99" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field">
+            <label>Data de Vencimento</label>
+            <input type="date" id="fVencimento" />
+          </div>
+
+          <div class="form-field">
+            <label>Nº Total de Parcelas</label>
+            <input type="number" id="fTotalParcelas" placeholder="Ex: 12" min="1" step="1" />
+          </div>
+
+          <div class="form-field">
+            <label>Parcelas Pagas</label>
+            <input type="number" id="fParcelasPagas" placeholder="Ex: 3" min="0" step="1" />
+          </div>
+
+          <div class="form-field">
+            <label>Valor pago na parcela atual</label>
+            <input type="number" id="fParcialPago" placeholder="Ex: 55,52" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field">
+            <label>Valor em atraso</label>
+            <input type="number" id="fAtraso" placeholder="Ex: 20,66" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field">
+            <label>IOF / Encargos extras</label>
+            <input type="number" id="fIOF" placeholder="Ex: 2,11" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field">
+            <label>Valor original (antes de renegociação)</label>
+            <input type="number" id="fValorOriginal" placeholder="Ex: 199,78" min="0" step="0.01" />
+          </div>
+
+          <div class="form-field full">
+            <label>Observações</label>
+            <textarea id="fObs" placeholder="Ex: Renegociado em jan/25, veio de um empréstimo anterior..."></textarea>
+          </div>
+
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('addModal')">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <span id="addModalBtnLabel">Salvar Dívida</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — DETALHES ══════════════════════════════ -->
+<div class="overlay" id="detailModal" onclick="closeOnBackdrop(event, 'detailModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Detalhes</div>
+      <button class="icon-btn" onclick="closeModal('detailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — LISTA DE DÍVIDAS ══════════════════════ -->
+<div class="overlay" id="listModal" onclick="closeOnBackdrop(event, 'listModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Dívidas Ativas</div>
+      <button class="icon-btn" onclick="closeModal('listModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="listBody"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — PAGAR DÍVIDA ══════════════════════════ -->
+<div class="overlay" id="payModal" onclick="closeOnBackdrop(event, 'payModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="payModalTitle">💸 Registrar Pagamento</div>
+      <button class="icon-btn" onclick="closeModal('payModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="pay-debt-info" id="payDebtInfo"></div>
+      <div class="form-field" style="margin-top:20px">
+        <label>Quanto você pagou? <span class="required-dot">*</span></label>
+        <div class="pay-input-wrap">
+          <span class="pay-currency">R$</span>
+          <input type="number" id="payValue" placeholder="0,00" min="0.01" step="0.01" oninput="onPayValueChange()" />
+        </div>
+        <span class="form-hint" id="payHint"></span>
+      </div>
+      <div class="pay-quick-btns" id="payQuickBtns"></div>
+      <div class="form-field" style="margin-top:16px">
+        <label>Observação (opcional)</label>
+        <input type="text" id="payObs" placeholder="Ex: Pagamento de fevereiro..." />
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('payModal')">Cancelar</button>
+        <button class="btn btn-green" id="payConfirmBtn" onclick="confirmarPagamento()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Confirmar Pagamento
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — QUITAÇÃO ═══════════════════════════════ -->
+<div class="overlay" id="closeDebtModal" onclick="closeOnBackdrop(event, 'closeDebtModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">🎉 Dívida Quitada!</div>
+      <button class="icon-btn" onclick="closeModal('closeDebtModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="close-debt-celebration">
+        <div class="celebration-icon">🎊</div>
+        <p id="closingDebtMsg">Você pagou o valor total desta dívida!</p>
+        <p class="celebration-sub">Deseja marcar esta dívida como quitada e movê-la para o histórico?</p>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="naoQuitarDivida()">Não, apenas dar baixa</button>
+        <button class="btn btn-green" onclick="quitarDivida()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Sim, quitar dívida!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — DADOS (export/import) ════════════════ -->
+<div class="overlay" id="dataModal" onclick="closeOnBackdrop(event, 'dataModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">💾 Gerenciar Dados</div>
+      <button class="icon-btn" onclick="closeModal('dataModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="data-section">
+        <div class="data-section-title">📤 Exportar</div>
+        <p class="data-desc">Baixa um arquivo <code>.json</code> com todas as suas dívidas ativas e pagas. Use como backup ou para migrar para outro dispositivo.</p>
+        <div class="data-info-row" id="dataInfoRow">
+          <span id="dataInfoAtivas">— dívidas ativas</span>
+          <span class="data-dot">·</span>
+          <span id="dataInfoPagas">— pagas</span>
+          <span class="data-dot">·</span>
+          <span id="dataInfoDate">—</span>
+        </div>
+        <button class="btn btn-ghost data-btn" onclick="exportarDados()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Baixar backup (.json)
+        </button>
+      </div>
+
+      <div class="data-divider"></div>
+
+      <div class="data-section">
+        <div class="data-section-title">📥 Importar</div>
+        <p class="data-desc">Selecione um arquivo <code>.json</code> exportado anteriormente. Os dados atuais serão <strong>substituídos</strong> pelos dados do arquivo.</p>
+        <label class="btn btn-ghost data-btn" for="importFileInput" style="cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Selecionar arquivo
+        </label>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importarDados(event)" />
+        <div class="import-preview" id="importPreview" style="display:none">
+          <div class="import-preview-title">Prévia do arquivo:</div>
+          <div class="import-preview-body" id="importPreviewBody"></div>
+          <div class="import-actions">
+            <button class="btn btn-ghost" onclick="cancelarImport()">Cancelar</button>
+            <button class="btn btn-primary" onclick="confirmarImport()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Confirmar e substituir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-divider"></div>
+
+      <div class="data-section">
+        <div class="data-section-title">⏰ Backup automático</div>
+        <p class="data-desc">Quando ativado, o app lembrará de fazer o backup enquanto estiver aberto. Um aviso aparece a cada 7 dias.</p>
+        <div class="auto-backup-row">
+          <span id="autoBackupLabel">Desativado</span>
+          <button class="toggle-btn" id="autoBackupToggle" onclick="toggleAutoBackup()">
+            <div class="toggle-thumb"></div>
+          </button>
+        </div>
+        <span class="data-desc" id="autoBackupNextMsg" style="margin-top:6px;display:block"></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ══════════════════════════════════════════ -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Salvo!</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="script.js"></script>
+<script src="dados.js"></script>
+</body>
+</html>

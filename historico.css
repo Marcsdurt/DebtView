@@ -1,0 +1,314 @@
+/* ═══════════════════════════════════════════════════
+   DebtView — historico.css
+   ═══════════════════════════════════════════════════ */
+
+/* ── HERO VERDE ──────────────────────────────────── */
+.hero-green::after {
+  background: radial-gradient(circle, rgba(39, 196, 122, 0.12) 0%, transparent 70%) !important;
+}
+
+.hero-total.green {
+  color: var(--green) !important;
+  text-shadow: 0 0 60px rgba(39, 196, 122, 0.3) !important;
+}
+
+/* ── SEARCH INPUT ────────────────────────────────── */
+.search-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  padding: 9px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 220px;
+}
+
+.search-input:focus {
+  border-color: var(--green);
+}
+
+/* ── HISTORY CARD ────────────────────────────────── */
+.history-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  animation: cardIn 0.35s ease both;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--green);
+  border-radius: 3px 0 0 3px;
+  opacity: 0.8;
+}
+
+.history-card:hover {
+  border-color: rgba(39, 196, 122, 0.3);
+  transform: translateY(-2px);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.history-type-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.history-info {
+  min-width: 0;
+}
+
+.history-creditor {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 5px;
+}
+
+.history-meta span {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+}
+
+.history-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.history-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  color: var(--green);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.history-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+.history-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+/* ── BADGE QUITADO ───────────────────────────────── */
+.badge-quitado {
+  background: rgba(39, 196, 122, 0.12);
+  color: var(--green);
+  border: 1px solid rgba(39, 196, 122, 0.3);
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* ── PAYMENT TIMELINE ────────────────────────────── */
+.pay-timeline {
+  margin-top: 20px;
+}
+
+.pay-timeline-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pay-timeline-item {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.pay-timeline-item:last-child {
+  border-bottom: none;
+}
+
+.ptl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  margin-top: 5px;
+  position: relative;
+}
+
+.ptl-dot::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 10px;
+  width: 2px;
+  height: calc(100% + 14px);
+  background: var(--border);
+}
+
+.pay-timeline-item:last-child .ptl-dot::before {
+  display: none;
+}
+
+.ptl-content {
+  flex: 1;
+}
+
+.ptl-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 3px;
+}
+
+.ptl-val {
+  font-weight: 600;
+  color: var(--green);
+  font-size: 15px;
+}
+
+.ptl-obs {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.ptl-saldo {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+  margin-top: 3px;
+}
+
+/* ── DETAIL TABLE ────────────────────────────────── */
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.detail-cell {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.detail-cell .dc-label {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.detail-cell .dc-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.detail-cell .dc-val.green { color: var(--green); }
+.detail-cell .dc-val.red   { color: var(--red); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 600px) {
+  .history-card {
+    grid-template-columns: 40px 1fr;
+    gap: 10px 12px;
+    padding: 14px;
+  }
+
+  /* Números vão abaixo do info, full width */
+  .history-numbers {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 2px;
+  }
+
+  .history-amount { font-size: 22px; }
+
+  .history-creditor { font-size: 14px; }
+  .history-meta span { font-size: 11px; }
+
+  .search-input { width: 140px; font-size: 13px; }
+
+  .section-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .section-header > div {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .detail-grid { grid-template-columns: 1fr; }
+
+  .pay-timeline-item { gap: 10px; }
+}

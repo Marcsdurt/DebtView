@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebtView — Dívidas Pagas</title>
+  <link rel="icon"             type="image/x-icon"       href="icons/favicon.ico" />
+  <link rel="icon"             type="image/png" sizes="32x32"  href="icons/favicon-32x32.png" />
+  <link rel="manifest"                                    href="icons/site.webmanifest" />
+  <meta name="theme-color" content="#0d0d0f" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="historico.css" />
+</head>
+<body>
+
+<!-- ═══ HEADER ═══════════════════════════════════════ -->
+<header>
+  <div class="logo">Debt<span>View</span></div>
+  <div class="header-right">
+    <a href="index.html" class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Dívidas Ativas
+    </a>
+    <button class="btn btn-ghost" onclick="openModal('dataModal')" title="Exportar / Importar dados">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Dados
+    </button>
+  </div>
+</header>
+
+<!-- ═══ MOBILE BOTTOM NAV ════════════════════════════ -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="index.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Ativas
+    </a>
+    <button class="mobile-nav-btn active" disabled style="opacity:0.5;cursor:default">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+      Pagas
+    </button>
+    <button class="mobile-nav-btn" onclick="openModal('dataModal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Dados
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ══════════════════════════════════════════ -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero-section hero-green">
+    <div class="hero-label">▸ Total quitado</div>
+    <div class="hero-total green" id="heroTotal">R$ 0,00</div>
+    <div class="hero-sub" id="heroSub">Nenhuma dívida quitada ainda</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Dívidas Quitadas</div>
+      <div class="stat-value green" id="statCount">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Maior Quitação</div>
+      <div class="stat-value accent" id="statMaior" style="font-size:22px;margin-top:6px;">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Mais Recente</div>
+      <div class="stat-value" id="statRecente" style="font-size:16px;margin-top:10px;color:var(--text-dim)">—</div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="section-header">
+    <div class="section-title">Histórico de Quitações</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍  Buscar credor..." oninput="renderHistory()" />
+      <button class="btn btn-ghost" onclick="confirmClearAll()" style="color:var(--red);border-color:rgba(232,53,74,0.3)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>
+        </svg>
+        Limpar tudo
+      </button>
+    </div>
+  </div>
+
+  <!-- HISTORY LIST -->
+  <div class="debt-list" id="historyList">
+    <div class="empty-state">
+      <div class="empty-state-icon">🎊</div>
+      <h3>Nenhuma dívida quitada ainda</h3>
+      <p>Quando você quitar uma dívida, ela aparece aqui como histórico.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ MODAL — DETALHES DA QUITAÇÃO ══════════════════ -->
+<div class="overlay" id="detailModal" onclick="closeOnBackdrop(event, 'detailModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Detalhes</div>
+      <button class="icon-btn" onclick="closeModal('detailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM CLEAR ══════════════════════════════════ -->
+<div class="overlay" id="confirmModal" onclick="closeOnBackdrop(event, 'confirmModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">⚠️ Confirmar limpeza</div>
+      <button class="icon-btn" onclick="closeModal('confirmModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text-dim);margin-bottom:24px;">Isso vai apagar todo o histórico de dívidas pagas. Esta ação não pode ser desfeita.</p>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeModal('confirmModal')">Cancelar</button>
+        <button class="btn" style="background:var(--red);color:#fff" onclick="clearAll()">
+          Sim, limpar tudo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — DADOS (export/import) ════════════════ -->
+<div class="overlay" id="dataModal" onclick="closeOnBackdrop(event, 'dataModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">💾 Gerenciar Dados</div>
+      <button class="icon-btn" onclick="closeModal('dataModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="data-section">
+        <div class="data-section-title">📤 Exportar</div>
+        <p class="data-desc">Baixa um arquivo <code>.json</code> com todas as suas dívidas ativas e pagas.</p>
+        <div class="data-info-row" id="dataInfoRow">
+          <span id="dataInfoAtivas">—</span>
+          <span class="data-dot">·</span>
+          <span id="dataInfoPagas">—</span>
+          <span class="data-dot">·</span>
+          <span id="dataInfoDate">—</span>
+        </div>
+        <button class="btn btn-ghost data-btn" onclick="exportarDados()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Baixar backup (.json)
+        </button>
+      </div>
+      <div class="data-divider"></div>
+      <div class="data-section">
+        <div class="data-section-title">📥 Importar</div>
+        <p class="data-desc">Selecione um arquivo <code>.json</code> exportado. Os dados atuais serão <strong>substituídos</strong>.</p>
+        <label class="btn btn-ghost data-btn" for="importFileInput" style="cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Selecionar arquivo
+        </label>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importarDados(event)" />
+        <div class="import-preview" id="importPreview" style="display:none">
+          <div class="import-preview-title">Prévia do arquivo:</div>
+          <div class="import-preview-body" id="importPreviewBody"></div>
+          <div class="import-actions">
+            <button class="btn btn-ghost" onclick="cancelarImport()">Cancelar</button>
+            <button class="btn btn-primary" onclick="confirmarImport()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Confirmar e substituir
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="data-divider"></div>
+      <div class="data-section">
+        <div class="data-section-title">⏰ Backup automático</div>
+        <p class="data-desc">Lembrete a cada 7 dias para exportar seus dados (funciona apenas com o app aberto).</p>
+        <div class="auto-backup-row">
+          <span id="autoBackupLabel">Desativado</span>
+          <button class="toggle-btn" id="autoBackupToggle" onclick="toggleAutoBackup()">
+            <div class="toggle-thumb"></div>
+          </button>
+        </div>
+        <span class="data-desc" id="autoBackupNextMsg" style="margin-top:6px;display:block"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ══════════════════════════════════════════ -->
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Ok!</span>
+</div>
+
+<script src="historico.js"></script>
+<script src="dados.js"></script>
+</body>
+</html>
