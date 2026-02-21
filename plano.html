@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DebtView — Plano de Saída</title>
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico"/>
+  <meta name="theme-color" content="#0d0d0f"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="plano.css"/>
+</head>
+<body>
+
+<header>
+  <div class="logo">Debt<span>View</span></div>
+  <div class="header-right">
+    <a href="index.html" class="btn btn-ghost" style="text-decoration:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Dívidas
+    </a>
+  </div>
+</header>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="index.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+      Dívidas
+    </a>
+    <a href="historico.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Pagas
+    </a>
+    <button class="mobile-nav-btn" disabled style="opacity:.5;cursor:default">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Plano
+    </button>
+  </div>
+</nav>
+
+<main class="plano-main">
+
+  <!-- STEP 1 — Tem renda? -->
+  <div id="s1" class="pstep">
+    <div class="step-emoji">💼</div>
+    <h1 class="step-h1">Você tem alguma fonte de renda?</h1>
+    <p class="step-p">Pode ser salário, freela, bico, aluguel — qualquer coisa que entra no seu bolso.</p>
+    <div class="choice-row">
+      <button class="choice-no" onclick="goStep('ssemrenda')">
+        <span>😕</span>
+        Não agora
+      </button>
+      <button class="choice-yes" onclick="goStep('s2')">
+        <span>💰</span>
+        Sim, tenho!
+      </button>
+    </div>
+  </div>
+
+  <!-- SEM RENDA -->
+  <div id="ssemrenda" class="pstep" style="display:none">
+    <div class="step-emoji">😕</div>
+    <h1 class="step-h1">Sem renda por enquanto</h1>
+    <p class="step-p">Tudo bem. Quando tiver uma renda, volte aqui pra ver em quanto tempo você consegue se livrar das dívidas.</p>
+    <a href="index.html" class="btn-next" style="text-decoration:none">← Ver minhas dívidas</a>
+  </div>
+
+  <!-- STEP 2 — Cadastrar renda -->
+  <div id="s2" class="pstep" style="display:none">
+    <button class="back-btn" onclick="goStep('s1')">← Voltar</button>
+    <div class="step-emoji">✏️</div>
+    <h1 class="step-h1">Me conta sobre sua renda</h1>
+    <p class="step-p">Não precisa ser exato — uma estimativa já resolve.</p>
+
+    <div class="form-stack">
+
+      <div class="fgroup">
+        <label class="flabel">Como você chama essa renda?</label>
+        <input class="finput" type="text" id="rNome" placeholder="Ex: Salário, Freela, Bico..." maxlength="40"/>
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">Quanto você recebe?</label>
+        <div class="money-wrap">
+          <span class="money-prefix">R$</span>
+          <input class="finput money-input" type="number" id="rValor" placeholder="0,00" min="1" step="0.01" oninput="onRendaChange()"/>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">Você recebe...</label>
+        <div class="freq-grid">
+          <label class="freq-card">
+            <input type="radio" name="freq" value="mes" checked onchange="onRendaChange()"/>
+            <div class="freq-inner"><span>📅</span><span>Por mês</span></div>
+          </label>
+          <label class="freq-card">
+            <input type="radio" name="freq" value="semana" onchange="onRendaChange()"/>
+            <div class="freq-inner"><span>📆</span><span>Por semana</span></div>
+          </label>
+          <label class="freq-card">
+            <input type="radio" name="freq" value="dia" onchange="onRendaChange()"/>
+            <div class="freq-inner"><span>🔢</span><span>Por dia</span></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- dias da semana — só aparece em "por dia" -->
+      <div class="fgroup" id="diasWrap" style="display:none">
+        <label class="flabel">Quais dias você trabalha?</label>
+        <div class="dias-row">
+          <label class="dia-pill"><input type="checkbox" value="1" onchange="onRendaChange()"/><span>Seg</span></label>
+          <label class="dia-pill"><input type="checkbox" value="2" onchange="onRendaChange()"/><span>Ter</span></label>
+          <label class="dia-pill"><input type="checkbox" value="3" onchange="onRendaChange()"/><span>Qua</span></label>
+          <label class="dia-pill"><input type="checkbox" value="4" onchange="onRendaChange()"/><span>Qui</span></label>
+          <label class="dia-pill"><input type="checkbox" value="5" onchange="onRendaChange()"/><span>Sex</span></label>
+          <label class="dia-pill"><input type="checkbox" value="6" onchange="onRendaChange()"/><span>Sáb</span></label>
+          <label class="dia-pill"><input type="checkbox" value="0" onchange="onRendaChange()"/><span>Dom</span></label>
+        </div>
+      </div>
+
+      <!-- preview mensal -->
+      <div class="renda-preview" id="rendaPreview" style="display:none">
+        <div class="rp-top">Isso equivale a</div>
+        <div class="rp-valor" id="rendaPreviewVal">R$ 0</div>
+        <div class="rp-bot">por mês</div>
+      </div>
+
+      <!-- rendas já salvas -->
+      <div id="rendasSalvas" style="display:none">
+        <div class="salvas-label">Rendas adicionadas:</div>
+        <div id="rendasSalvasList"></div>
+      </div>
+
+      <div class="form-actions-row">
+        <button class="btn-add" onclick="adicionarRenda()">+ Adicionar mais uma renda</button>
+        <button class="btn-next" id="btnNext2" onclick="goStep('s3')" disabled>Continuar →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 3 — Slider de % -->
+  <div id="s3" class="pstep" style="display:none">
+    <button class="back-btn" onclick="goStep('s2')">← Voltar</button>
+    <div class="step-emoji">🎯</div>
+    <h1 class="step-h1">Quanto você consegue separar pras dívidas?</h1>
+    <p class="step-p">Ninguém usa tudo que ganha pra pagar dívida. Seja honesto — isso é pra te ajudar.</p>
+
+    <div class="renda-badge" id="rendaBadge"></div>
+
+    <div class="slider-block">
+      <div class="slider-pct" id="sliderPct">20%</div>
+      <div class="slider-reais" id="sliderReais">R$ 0</div>
+      <div class="slider-sobra" id="sliderSobra"></div>
+
+      <input type="range" id="pctSlider" class="big-slider"
+             min="5" max="80" step="5" value="20"
+             oninput="onSlider()"/>
+
+      <div class="slider-track-labels">
+        <span>5%</span>
+        <span class="safe-badge">Ideal: 20–40%</span>
+        <span>80%</span>
+      </div>
+
+      <div id="sliderAlert" class="slider-alert" style="display:none"></div>
+    </div>
+
+    <button class="btn-next" onclick="goStep('s4'); calcularPlano()">Ver meu plano de saída →</button>
+  </div>
+
+  <!-- STEP 4 — RESULTADO -->
+  <div id="s4" class="pstep" style="display:none">
+    <button class="back-btn" onclick="goStep('s3')">← Ajustar</button>
+
+    <!-- Card da libertação -->
+    <div class="lib-card" id="libCard"></div>
+
+    <!-- Análise -->
+    <div class="bloco" id="analiseBloco"></div>
+
+    <!-- Linha do tempo -->
+    <div class="bloco" id="timelineBloco"></div>
+
+    <!-- Gráfico de queda da dívida -->
+    <div class="bloco" id="graficoBloco"></div>
+
+    <!-- Ordem de pagamento -->
+    <div class="bloco" id="ordemBloco"></div>
+
+    <button class="btn-refazer" onclick="goStep('s1'); resetForm()">↺ Recalcular com outros valores</button>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Ok!</span></div>
+
+<script src="plano.js"></script>
+</body>
+</html>
