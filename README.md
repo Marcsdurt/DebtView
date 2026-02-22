@@ -103,33 +103,6 @@ debtview/
     └── favicon.ico
 ```
 
----
-
-## 🚀 Como usar
-
-**Opção 1 — Localmente**
-
-```bash
-git clone https://github.com/seu-usuario/debtview.git
-cd debtview
-# Abra o index.html no seu navegador
-open index.html  # macOS
-start index.html # Windows
-xdg-open index.html # Linux
-```
-
-**Opção 2 — GitHub Pages**
-
-1. Fork este repositório
-2. Vá em **Settings → Pages**
-3. Source: `Deploy from a branch` → `main` → `/ (root)`
-4. Acesse `https://seu-usuario.github.io/debtview`
-
-**Opção 3 — Qualquer hospedagem estática**
-
-Copie todos os arquivos para qualquer servidor de arquivos estáticos (Netlify, Vercel, S3, etc.). Não precisa de backend.
-
----
 
 ## 📊 Como funciona o cálculo
 
@@ -172,18 +145,6 @@ A cada mês simulado:
 ## 🔒 Privacidade
 
 Nenhum dado é enviado para qualquer servidor. Tudo fica salvo no `localStorage` do seu navegador. Para não perder dados ao limpar o histórico do navegador, use a função **Exportar dados** nas configurações regularmente.
-
----
-
-## 🗺️ Roadmap
-
-- [ ] PWA com instalação e funcionamento offline completo
-- [ ] Notificações push para vencimentos próximos
-- [ ] Sincronização via link compartilhável (criptografado)
-- [ ] Modo casal — duas pessoas, uma visão de dívidas
-- [ ] Importação de extratos PDF/CSV
-- [ ] Dark/Light mode toggle
-- [ ] Relatório mensal em PDF
 
 ---
 
