@@ -377,3 +377,247 @@
   .lib-chips  { gap: 6px; }
   .lib-chip   { font-size: 12px; padding: 6px 12px; }
 }
+
+/* ── SALVAR PLANO ────────────────────────────────── */
+.salvar-plano-wrap {
+  margin-bottom: 12px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.salvar-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.salvar-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-salvar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 18px;
+  height: 48px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+
+.btn-salvar:hover {
+  background: #9e80ff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(124,92,252,.35);
+}
+
+.salvar-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── PLANOS SALVOS — BALÕES ──────────────────────── */
+.ps-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 40px;
+  margin-bottom: 14px;
+}
+
+.planos-baloes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.plano-balao {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all .2s;
+  min-width: 150px;
+  max-width: 220px;
+
+  flex: 1;
+}
+
+@keyframes balaoPop {
+  from { opacity:0; transform: scale(.8) translateY(10px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.plano-balao:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.3);
+}
+
+.plano-balao::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  border-radius: 18px 18px 0 0;
+}
+
+.pb-del {
+  position: absolute;
+  top: 8px; right: 10px;
+  background: none; border: none;
+  color: var(--border);
+  font-size: 18px; line-height: 1;
+  cursor: pointer; padding: 0;
+  transition: color .18s;
+}
+.pb-del:hover { color: var(--red); }
+
+.pb-nome {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 8px;
+  padding-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pb-prazo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.pb-meta {
+  display: flex;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.pb-data {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--border);
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .salvar-row { flex-direction: column; }
+  .btn-salvar { height: 48px; justify-content: center; }
+  .plano-balao { max-width: 100%; }
+}
+
+/* ── FLUTUAÇÃO DOS BALÕES ────────────────────────── */
+
+/* 
+  Segredo: usar cubic-bezier que imita seno puro.
+  A curva (.45,0,.55,1) é quase linear no meio e suave nas pontas —
+  resultado: movimento contínuo sem nenhuma pausa perceptível.
+  Somamos translateY + leve rotate + leve scale para parecer
+  que o balão respira no ar, não só sobe/desce.
+*/
+
+@keyframes flutuaA {
+  0%   { transform: translateY(0px)   rotate(0deg)    scale(1); }
+  25%  { transform: translateY(-7px)  rotate(.4deg)   scale(1.01); }
+  50%  { transform: translateY(-12px) rotate(0deg)    scale(1.015); }
+  75%  { transform: translateY(-7px)  rotate(-.4deg)  scale(1.01); }
+  100% { transform: translateY(0px)   rotate(0deg)    scale(1); }
+}
+
+@keyframes flutuaB {
+  0%   { transform: translateY(-6px)  rotate(-.3deg)  scale(1.01); }
+  25%  { transform: translateY(-12px) rotate(0deg)    scale(1.015); }
+  50%  { transform: translateY(-6px)  rotate(.3deg)   scale(1.01); }
+  75%  { transform: translateY(0px)   rotate(0deg)    scale(1); }
+  100% { transform: translateY(-6px)  rotate(-.3deg)  scale(1.01); }
+}
+
+@keyframes flutuaC {
+  0%   { transform: translateY(-3px)  rotate(.2deg)   scale(1); }
+  33%  { transform: translateY(-11px) rotate(-.2deg)  scale(1.012); }
+  66%  { transform: translateY(-2px)  rotate(.3deg)   scale(1.005); }
+  100% { transform: translateY(-3px)  rotate(.2deg)   scale(1); }
+}
+
+@keyframes flutuaD {
+  0%   { transform: translateY(-9px)  rotate(0deg)    scale(1.01); }
+  40%  { transform: translateY(-1px)  rotate(.35deg)  scale(1); }
+  70%  { transform: translateY(-10px) rotate(-.2deg)  scale(1.015); }
+  100% { transform: translateY(-9px)  rotate(0deg)    scale(1.01); }
+}
+
+/* Pop de entrada — só roda uma vez, depois entra o float */
+@keyframes balaoPop {
+  from { opacity:0; transform: scale(.75) translateY(14px); }
+  to   { opacity:1; transform: scale(1)   translateY(0); }
+}
+
+.plano-balao {
+  animation: balaoPop .5s cubic-bezier(.34,1.4,.64,1) both;
+}
+
+/* Após o pop, liga o float. Usamos will-change pra GPU acelerar */
+.plano-balao { will-change: transform; }
+
+.plano-balao:nth-child(1) {
+  animation:
+    balaoPop .5s cubic-bezier(.34,1.4,.64,1) 0s    both,
+    flutuaA  5.8s cubic-bezier(.45,0,.55,1)  0.5s  infinite;
+}
+.plano-balao:nth-child(2) {
+  animation:
+    balaoPop .5s cubic-bezier(.34,1.4,.64,1) .08s  both,
+    flutuaB  6.4s cubic-bezier(.45,0,.55,1)  1.2s  infinite;
+}
+.plano-balao:nth-child(3) {
+  animation:
+    balaoPop .5s cubic-bezier(.34,1.4,.64,1) .16s  both,
+    flutuaC  5.2s cubic-bezier(.45,0,.55,1)  0.8s  infinite;
+}
+.plano-balao:nth-child(4) {
+  animation:
+    balaoPop .5s cubic-bezier(.34,1.4,.64,1) .24s  both,
+    flutuaD  7.1s cubic-bezier(.45,0,.55,1)  2.0s  infinite;
+}
+.plano-balao:nth-child(n+5) {
+  animation:
+    balaoPop .5s cubic-bezier(.34,1.4,.64,1) .32s  both,
+    flutuaA  6.0s cubic-bezier(.45,0,.55,1)  1.5s  infinite;
+}
+
+/* Hover: pausa suave — o balão "para" onde está */
+.plano-balao:hover {
+  animation-play-state: paused !important;
+  filter: brightness(1.06);
+  box-shadow: 0 14px 36px rgba(0,0,0,.35), 0 0 0 1px var(--accent) !important;
+  transition: filter .2s, box-shadow .2s;
+}

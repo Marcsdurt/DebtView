@@ -1,0 +1,313 @@
+/* ═══════════════════════════════════════════════════
+   DebtView — theme.css
+   Inclua em TODAS as páginas, depois de style.css
+   ═══════════════════════════════════════════════════ */
+
+/* ── LIGHT MODE ──────────────────────────────────── */
+[data-theme="light"] {
+  --bg:        #f4f3f0;
+  --surface:   #ffffff;
+  --surface2:  #ededea;
+  --border:    #dddbd6;
+  --red:       #cc2235;
+  --red-dim:   #a31a2a;
+  --red-glow:  rgba(204, 34, 53, 0.1);
+  --amber:     #c47a00;
+  --green:     #1a9960;
+  --text:      #1a1a20;
+  --text-muted:#8a8a96;
+  --text-dim:  #555560;
+  --accent:    #5b3fcc;
+}
+
+/* ── BODY LIGHT ──────────────────────────────────── */
+[data-theme="light"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── GRAIN MAIS SUAVE NO LIGHT ───────────────────── */
+[data-theme="light"] body::before {
+  opacity: 0.2;
+}
+
+/* ── HEADER ──────────────────────────────────────── */
+[data-theme="light"] header {
+  background: rgba(244, 243, 240, 0.88);
+  border-bottom-color: var(--border);
+}
+
+/* ── MOBILE NAV ──────────────────────────────────── */
+[data-theme="light"] .mobile-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border-top-color: var(--border);
+}
+
+/* ── SCROLLBAR ───────────────────────────────────── */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #c8c6c0;
+}
+
+/* ── HERO ────────────────────────────────────────── */
+[data-theme="light"] .hero-section {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+[data-theme="light"] .hero-total {
+  text-shadow: 0 0 40px rgba(204, 34, 53, 0.18);
+}
+
+/* ── STAT CARDS ──────────────────────────────────── */
+[data-theme="light"] .stat-card {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+[data-theme="light"] .stat-card:hover {
+  border-color: #b8b5ae;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* ── DEBT CARDS ──────────────────────────────────── */
+[data-theme="light"] .debt-card {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .debt-card:hover {
+  background: #fafaf8;
+  border-color: #b8b5ae;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+}
+
+/* ── MODAIS ──────────────────────────────────────── */
+[data-theme="light"] .overlay {
+  background: rgba(0, 0, 0, 0.35);
+}
+[data-theme="light"] .modal {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+}
+[data-theme="light"] .modal::before {
+  background: #dddbd6;
+}
+
+/* ── FORMS ───────────────────────────────────────── */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: #f4f3f0;
+  border-color: var(--border);
+  color: var(--text);
+}
+[data-theme="light"] input:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] textarea:focus {
+  background: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 63, 204, 0.12);
+}
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder { color: #aaa9a3; }
+[data-theme="light"] select option {
+  background: #ffffff;
+  color: var(--text);
+}
+
+/* ── BUTTONS ─────────────────────────────────────── */
+[data-theme="light"] .btn-ghost {
+  color: var(--text-dim);
+  border-color: var(--border);
+}
+[data-theme="light"] .btn-ghost:hover {
+  background: #ededea;
+  color: var(--text);
+}
+
+/* ── ICON BTNS ───────────────────────────────────── */
+[data-theme="light"] .icon-btn {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+[data-theme="light"] .icon-btn:hover {
+  background: #ededea;
+  color: var(--text);
+  border-color: #b8b5ae;
+}
+[data-theme="light"] .icon-btn.danger:hover {
+  background: rgba(204, 34, 53, 0.08);
+  color: var(--red);
+  border-color: rgba(204, 34, 53, 0.3);
+}
+
+/* ── PROGRESS BAR ────────────────────────────────── */
+[data-theme="light"] .progress-bar { background: #e8e6e0; }
+
+/* ── TOAST ───────────────────────────────────────── */
+[data-theme="light"] .toast {
+  background: #ffffff;
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+}
+
+/* ── DETAIL KPI ──────────────────────────────────── */
+[data-theme="light"] .detail-kpi {
+  background: #f4f3f0;
+  border-color: var(--border);
+}
+
+/* ── BADGES ──────────────────────────────────────── */
+[data-theme="light"] .badge-venc     { background: rgba(196,122,0,0.1);  border-color: rgba(196,122,0,0.2);  }
+[data-theme="light"] .badge-ok       { background: rgba(26,153,96,0.09); border-color: rgba(26,153,96,0.2);  }
+[data-theme="light"] .badge-atrasado { background: rgba(204,34,53,0.08); border-color: rgba(204,34,53,0.2);  }
+
+/* ── DETAIL ROWS ─────────────────────────────────── */
+[data-theme="light"] .detail-row        { border-bottom-color: var(--border); }
+[data-theme="light"] .detail-section-title { border-bottom-color: var(--border); }
+[data-theme="light"] .detail-obs        { background: #f4f3f0; }
+
+/* ── LIST MODAL ITEM ─────────────────────────────── */
+[data-theme="light"] .list-modal-item { border-bottom-color: var(--border); }
+
+/* ── PORQUINHO ───────────────────────────────────── */
+[data-theme="light"] .deposit-card {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .deposit-card:hover {
+  border-color: #b8b5ae;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+}
+[data-theme="light"] .destino-preview {
+  background: rgba(26,153,96,0.06);
+  border-color: rgba(26,153,96,0.18);
+}
+[data-theme="light"] .destinar-liquid-wrap {
+  background: rgba(26,153,96,0.05);
+  border-color: rgba(26,153,96,0.15);
+}
+[data-theme="light"] .alerta-sugestao {
+  background: rgba(91,63,204,0.07);
+  border-color: rgba(91,63,204,0.18);
+}
+[data-theme="light"] .deposit-motive {
+  background: rgba(196,122,0,0.06);
+  border-color: rgba(196,122,0,0.18);
+}
+[data-theme="light"] .resgate-warn {
+  background: rgba(204,34,53,0.06);
+  border-color: rgba(204,34,53,0.18);
+}
+
+/* ── TUTORIAL ────────────────────────────────────── */
+[data-theme="light"] .tut-tooltip {
+  background: #ffffff;
+  border-color: rgba(196,122,0,0.25);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+}
+[data-theme="light"] .tut-tooltip::before {
+  background: #ffffff;
+}
+[data-theme="light"] .tut-title  { color: #1a1a20; }
+[data-theme="light"] .tut-body   { color: #555560; }
+[data-theme="light"] .tut-body strong { color: #1a1a20; }
+[data-theme="light"] .tut-btn-skip    { color: #aaa9a3; }
+[data-theme="light"] .tut-btn-prev    { border-color: #dddbd6; color: #8a8a96; }
+[data-theme="light"] .tut-btn-prev:hover { background: #f4f3f0; color: #1a1a20; }
+[data-theme="light"] .tut-menu-box {
+  background: #ffffff;
+  border-color: rgba(196,122,0,0.18);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.18);
+}
+[data-theme="light"] .tut-menu-title  { color: #1a1a20; }
+[data-theme="light"] .tut-menu-sub    { color: #8a8a96; }
+[data-theme="light"] .tut-menu-btn-sec {
+  border-color: var(--border);
+  color: #8a8a96;
+}
+[data-theme="light"] .tut-menu-btn-sec:hover { background: #f4f3f0; color: #1a1a20; }
+[data-theme="light"] .tut-topic-btn {
+  border-color: var(--border);
+  background: #fafaf8;
+  color: #8a8a96;
+}
+[data-theme="light"] .tut-topic-btn:hover { background: #f4f3f0; }
+[data-theme="light"] .tut-fab {
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(196,122,0,0.4);
+}
+[data-theme="light"] .tut-fab-popover {
+  background: #ffffff;
+  border-color: rgba(196,122,0,0.2);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+}
+[data-theme="light"] .tut-fab-popover::after {
+  background: #ffffff;
+}
+[data-theme="light"] .tut-pop-btn         { color: #8a8a96; }
+[data-theme="light"] .tut-pop-btn:hover   { background: #f4f3f0; color: #1a1a20; }
+[data-theme="light"] .tut-pop-btn.danger:hover { background: rgba(204,34,53,0.07); color: var(--red); }
+
+/* ── CONFIGURAÇÕES ───────────────────────────────── */
+[data-theme="light"] .cfg-card {
+  background: #ffffff;
+  border-color: var(--border);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+[data-theme="light"] .cfg-card-danger {
+  background: rgba(204,34,53,0.02);
+  border-color: rgba(204,34,53,0.15);
+}
+[data-theme="light"] .cfg-divider    { background: var(--border); }
+[data-theme="light"] .cfg-btn-sm     { background: #f4f3f0; border-color: var(--border); color: var(--text-dim); }
+[data-theme="light"] .cfg-btn-sm:hover { background: #ededea; color: var(--text); border-color: #b8b5ae; }
+[data-theme="light"] .cfg-tour-item  { background: #f4f3f0; border-color: var(--border); }
+[data-theme="light"] .cfg-about-tags span { background: #f4f3f0; border-color: var(--border); }
+
+/* ── PLANO ───────────────────────────────────────── */
+[data-theme="light"] .proj-good    { background: rgba(26,153,96,0.06);  border-color: rgba(26,153,96,0.18); }
+[data-theme="light"] .proj-danger  { background: rgba(204,34,53,0.06);  border-color: rgba(204,34,53,0.18); }
+[data-theme="light"] .proj-neutral { background: rgba(91,63,204,0.05);  border-color: rgba(91,63,204,0.15); }
+
+/* ── TOGGLE — LIGHT MODE FIX ─────────────────────── */
+[data-theme="light"] .toggle-btn {
+  background: #c8c5be;
+  border-color: #b0ada6;
+}
+[data-theme="light"] .toggle-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+}
+[data-theme="light"] .toggle-thumb {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+/* ── TRANSITION SUAVE AO TROCAR TEMA ─────────────── */
+/* Só aplica quando o tema muda de verdade (classe .theme-transitioning no html) */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    color 0.18s ease,
+    box-shadow 0.28s ease !important;
+}
+html.theme-transitioning .btn,
+html.theme-transitioning .icon-btn,
+html.theme-transitioning .stat-card,
+html.theme-transitioning .debt-card,
+html.theme-transitioning .deposit-card {
+  transition:
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    color 0.18s ease,
+    box-shadow 0.28s ease,
+    transform 0.2s ease !important;
+}

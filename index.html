@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script src="theme.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DebtView — Controle de Dívidas</title>
@@ -16,6 +17,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme.css"/>
 </head>
 <body>
 
@@ -28,6 +30,12 @@
         <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
       </svg>
       Dívidas Pagas
+    </a>
+    <a href="porquinho.html" class="btn btn-ghost" style="text-decoration:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Porquinho
     </a>
     <a href="plano.html" class="btn btn-ghost" style="text-decoration:none">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -48,8 +56,139 @@
       </svg>
       Nova Dívida
     </button>
-  </div>
+      <div style="position:relative" id="gearWrap">
+        <a href="configuracoes.html" class="btn btn-ghost" style="text-decoration:none;padding:8px 10px" title="Configurações">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </a>
+        <div id="themeBalloon" style="
+          position:absolute;
+          top:calc(100% + 10px);
+          right:0;
+          width:210px;
+          background:var(--surface);
+          border:1px solid var(--border);
+          border-radius:13px;
+          padding:12px 14px;
+          box-shadow:0 12px 40px rgba(0,0,0,0.18);
+          font-family:'DM Sans',sans-serif;
+          font-size:13px;
+          color:var(--text-dim);
+          line-height:1.5;
+          z-index:500;
+          opacity:0;
+          pointer-events:none;
+          transform:translateY(-4px);
+          transition:opacity 0.25s ease, transform 0.25s ease;
+        ">
+          <!-- seta -->
+          <div style="
+            position:absolute;
+            top:-6px;right:13px;
+            width:10px;height:10px;
+            background:var(--surface);
+            border-left:1px solid var(--border);
+            border-top:1px solid var(--border);
+            transform:rotate(45deg);
+          "></div>
+          🌙 <strong style="color:var(--text)">Dark mode disponível!</strong><br>
+          Troque o tema nas <a href="configuracoes.html" style="color:var(--accent);text-decoration:none;font-weight:500">Configurações</a>.
+          <button onclick="dismissBalloon()" style="
+            position:absolute;top:8px;right:10px;
+            background:none;border:none;cursor:pointer;
+            color:var(--text-muted);font-size:14px;line-height:1;
+            padding:2px 4px;border-radius:4px;
+          " title="Fechar">×</button>
+        </div>
+      </div></div>
 </header>
+
+<script>
+(function() {
+  if (localStorage.getItem('debtview_balloon_dismissed')) return;
+  var b = document.getElementById('themeBalloon');
+  if (!b) return;
+  var _dismissed = false;
+  setTimeout(function() {
+    b.style.opacity = '1';
+    b.style.pointerEvents = 'all';
+    b.style.transform = 'translateY(0)';
+    setTimeout(function() { dismissBalloon(); }, 8000);
+  }, 1500);
+})();
+
+function dismissBalloon() {
+  var b = document.getElementById('themeBalloon');
+  if (!b) return;
+  if (b.dataset.dismissed) return;
+  b.dataset.dismissed = '1';
+  localStorage.setItem('debtview_balloon_dismissed', '1');
+
+  // Pega posição ANTES de esconder
+  var rect = b.getBoundingClientRect();
+  var cx = rect.left + rect.width  / 2;
+  var cy = rect.top  + rect.height / 2;
+
+  // Squish e some
+  b.style.transition = 'transform 0.1s cubic-bezier(.36,.07,.19,.97), opacity 0.15s ease 0.05s';
+  b.style.transform  = 'scale(1.1)';
+  b.style.pointerEvents = 'none';
+  setTimeout(function() {
+    b.style.transform = 'scale(0)';
+    b.style.opacity   = '0';
+  }, 100);
+
+  // Explode gotículas
+  var colors = ['#7c5cfc','#f5a623','#27c47a','#e8354a','#4da8ff','#ff7d3b','#c084fc','#fbbf24'];
+  var count  = 24;
+
+  for (var i = 0; i < count; i++) {
+    spawnDrop(i, count, cx, cy, colors);
+  }
+}
+
+function spawnDrop(i, total, cx, cy, colors) {
+  var drop  = document.createElement('div');
+  var size  = 4 + Math.random() * 11;
+  var color = colors[Math.floor(Math.random() * colors.length)];
+  var angle = (360 / total) * i + (Math.random() - 0.5) * 30;
+  var dist  = 50 + Math.random() * 100;
+  var rad   = angle * Math.PI / 180;
+  var tx    = Math.cos(rad) * dist;
+  var ty    = Math.sin(rad) * dist;
+  var dur   = 500 + Math.random() * 350;
+
+  // Posição inicial no centro do balão
+  drop.style.position      = 'fixed';
+  drop.style.left          = (cx - size / 2) + 'px';
+  drop.style.top           = (cy - size / 2) + 'px';
+  drop.style.width         = size + 'px';
+  drop.style.height        = size + 'px';
+  drop.style.borderRadius  = '50%';
+  drop.style.background    = color;
+  drop.style.pointerEvents = 'none';
+  drop.style.zIndex        = '999999';
+  drop.style.boxShadow     = '0 0 ' + (size * 0.7) + 'px ' + color;
+  drop.style.opacity       = '1';
+  drop.style.transform     = 'translate(0,0) scale(1)';
+  // SEM transition ainda — aplica depois do reflow
+  drop.style.willChange    = 'transform, opacity';
+
+  document.body.appendChild(drop);
+
+  // Reflow garante que o elemento aparece na posição inicial antes de animar
+  void drop.offsetWidth;
+
+  // Agora seta a transition e anima
+  drop.style.transition = 'transform ' + dur + 'ms cubic-bezier(.2,.9,.4,1), opacity ' + dur + 'ms ease';
+  drop.style.transform  = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + (0.3 + Math.random() * 0.5) + ')';
+  drop.style.opacity    = '0';
+
+  setTimeout(function() { if (drop.parentNode) drop.parentNode.removeChild(drop); }, dur + 60);
+}
+</script>
 
 <!-- ═══ MOBILE BOTTOM NAV ════════════════════════════ -->
 <nav class="mobile-nav">
@@ -66,6 +205,12 @@
       </svg>
       Nova
     </button>
+    <a href="porquinho.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Cofre
+    </a>
     <a href="plano.html" class="mobile-nav-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
@@ -436,7 +581,9 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="tutorial.css"/>
 <script src="script.js"></script>
 <script src="dados.js"></script>
+<script src="tutorial.js"></script>
 </body>
 </html>

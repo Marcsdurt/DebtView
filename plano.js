@@ -30,6 +30,7 @@ function goStep(id) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 
   if (id === 's3') renderStep3();
+  if (id === 's4') calcularPlano();
 }
 
 // ── STEP 2 — RENDA ────────────────────────────────
@@ -463,11 +464,200 @@ function resetForm() {
   document.getElementById('rendasSalvas').style.display = 'none';
   document.getElementById('btnNext2').disabled = true;
   document.getElementById('pctSlider').value = 20;
+  localStorage.removeItem('debtview_plano_pct');
+  const banner = document.getElementById('restoreBanner');
+  if (banner) banner.remove();
 }
 
+// ── PERSISTÊNCIA DO SLIDER ────────────────────────
+function savePct(pct) {
+  localStorage.setItem('debtview_plano_pct', pct);
+}
+
+function loadPct() {
+  return parseInt(localStorage.getItem('debtview_plano_pct') || '20');
+}
+
+// Salva % sempre que muda
+const _origOnSlider = onSlider;
+// patch onSlider to also persist
+window.onSlider = function() {
+  _origOnSlider();
+  savePct(document.getElementById('pctSlider').value);
+};
+
 // ── INIT ──────────────────────────────────────────
-// Se já tem rendas salvas, vai direto para step 3
-if (rendas.length > 0) {
+(function init() {
+  const pctSalvo = loadPct();
+  document.getElementById('pctSlider').value = pctSalvo;
+
+  if (rendas.length === 0) {
+    // Nenhuma renda — mostra step 1 normalmente
+    goStep('s1');
+    return;
+  }
+
+  // Tem rendas salvas — restaura tudo
   renderRendasSalvas();
   document.getElementById('btnNext2').disabled = false;
+
+  if (debts.length > 0) {
+    // Tem renda + dívidas → vai direto ao resultado com banner "dados restaurados"
+    goStep('s4');
+    calcularPlano();
+    showRestoreBanner();
+  } else {
+    // Tem renda mas sem dívidas → vai para o slider
+    goStep('s3');
+  }
+})();
+
+function showRestoreBanner() {
+  // Banner discreto no topo do resultado
+  const s4 = document.getElementById('s4');
+  const existing = document.getElementById('restoreBanner');
+  if (existing) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'restoreBanner';
+  banner.style.cssText = `
+    background: rgba(124,92,252,.08);
+    border: 1px solid rgba(124,92,252,.25);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+  `;
+  banner.innerHTML = `
+    <span>🔄 Seu plano foi restaurado automaticamente.</span>
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;line-height:1;padding:0">×</button>
+  `;
+  // Insere depois do back-btn
+  const backBtn = s4.querySelector('.back-btn');
+  backBtn.insertAdjacentElement('afterend', banner);
 }
+
+// ── SALVAR / CARREGAR PLANOS ──────────────────────
+
+function salvarPlano() {
+  const nome = document.getElementById('planoNome').value.trim()
+    || `Plano de ${new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'short'})}`;
+
+  const pct          = parseInt(document.getElementById('pctSlider').value);
+  const rendaTotal   = rendaMensalTotal();
+  const disponivelMes = rendaTotal * (pct / 100);
+
+  // Calcula prazo para salvar no resumo
+  let totalMeses = 0;
+  if (debts.length > 0) {
+    let saldos = debts.map(d => ({ saldo: d.valorTotal, parcela: d.parcela||0, juros:(d.juros||0)/100 }));
+    let mes = 0;
+    while (saldos.some(s=>s.saldo>0.01) && mes<360) {
+      mes++;
+      let rest = disponivelMes;
+      saldos.sort((a,b) => b.juros - a.juros);
+      for (const s of saldos) {
+        if (s.saldo<0.01) continue;
+        if (s.juros>0) { const j=+(s.saldo*s.juros).toFixed(2); s.saldo+=j; }
+        const min=Math.min(s.parcela||s.saldo,s.saldo,rest);
+        s.saldo=Math.max(0,+(s.saldo-min).toFixed(2)); rest=Math.max(0,rest-min);
+      }
+    }
+    totalMeses = Math.ceil(mes * 1.15);
+  }
+
+  const totalDividas = debts.reduce((s,d)=>s+(d.valorTotal||0), 0);
+
+  const plano = {
+    id:          'plano_' + uid(),
+    nome,
+    savedAt:     new Date().toISOString(),
+    pct,
+    rendas:      JSON.parse(JSON.stringify(rendas)),
+    rendaTotal,
+    disponivelMes,
+    totalDividas,
+    totalMeses,
+    impossivel:  totalMeses >= 360,
+  };
+
+  const planos = JSON.parse(localStorage.getItem('debtview_planos') || '[]');
+  planos.unshift(plano); // mais recente primeiro
+  // Máximo 10 planos salvos
+  if (planos.length > 10) planos.pop();
+  localStorage.setItem('debtview_planos', JSON.stringify(planos));
+
+  document.getElementById('planoNome').value = '';
+  toast(`"${nome}" salvo! 🎯`, '✅');
+  renderPlanosSalvos();
+}
+
+function renderPlanosSalvos() {
+  const planos = JSON.parse(localStorage.getItem('debtview_planos') || '[]');
+  const wrap   = document.getElementById('planosSalvosWrap');
+  const list   = document.getElementById('planosSalvosList');
+
+  if (!wrap || !list) return;
+
+  if (planos.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  wrap.style.display = '';
+
+  list.innerHTML = planos.map((p, i) => {
+    const data    = new Date(p.savedAt).toLocaleDateString('pt-BR', {day:'2-digit', month:'short'});
+    const cor     = p.impossivel ? '#e8354a' : p.totalMeses <= 12 ? '#27c47a' : p.totalMeses <= 24 ? '#f5a623' : '#7c5cfc';
+    const prazo   = p.impossivel ? 'Não quitaria' : `${p.totalMeses} ${p.totalMeses===1?'mês':'meses'}`;
+    const delay   = i * 60;
+
+    return `
+      <div class="plano-balao" style="animation-delay:${delay}ms" onclick="carregarPlano('${p.id}')">
+        <button class="pb-del" onclick="event.stopPropagation(); deletarPlano('${p.id}')" title="Remover">×</button>
+        <div class="pb-nome">${p.nome}</div>
+        <div class="pb-prazo" style="color:${cor}">${prazo}</div>
+        <div class="pb-meta">
+          <span>${fmt(p.rendaTotal)}/mês</span>
+          <span>·</span>
+          <span>${p.pct}% destinado</span>
+        </div>
+        <div class="pb-data">${data}</div>
+      </div>`;
+  }).join('');
+}
+
+function carregarPlano(id) {
+  const planos = JSON.parse(localStorage.getItem('debtview_planos') || '[]');
+  const plano  = planos.find(p => p.id === id);
+  if (!plano) return;
+
+  // Restaura rendas do plano
+  rendas = plano.rendas;
+  localStorage.setItem('debtview_rendas', JSON.stringify(rendas));
+
+  // Restaura %
+  document.getElementById('pctSlider').value = plano.pct;
+  savePct(plano.pct);
+
+  // Vai direto ao resultado
+  renderRendasSalvas();
+  goStep('s4');
+  toast(`"${plano.nome}" carregado!`, '📂');
+}
+
+function deletarPlano(id) {
+  let planos = JSON.parse(localStorage.getItem('debtview_planos') || '[]');
+  planos = planos.filter(p => p.id !== id);
+  localStorage.setItem('debtview_planos', JSON.stringify(planos));
+  renderPlanosSalvos();
+  toast('Plano removido.', '🗑️');
+}
+
+// Renderiza balões na inicialização
+renderPlanosSalvos();

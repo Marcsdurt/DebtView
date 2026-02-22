@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script src="theme.js"></script>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DebtView — Plano de Saída</title>
@@ -8,6 +9,7 @@
   <meta name="theme-color" content="#0d0d0f"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="theme.css"/>
   <link rel="stylesheet" href="plano.css"/>
 </head>
 <body>
@@ -21,7 +23,12 @@
       </svg>
       Dívidas
     </a>
-  </div>
+      <a href="configuracoes.html" class="btn btn-ghost" style="text-decoration:none;padding:8px 10px" title="Configurações">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </a></div>
 </header>
 
 <nav class="mobile-nav">
@@ -57,6 +64,15 @@
         <span>💰</span>
         Sim, tenho!
       </button>
+    </div>
+
+    <!-- Planos salvos — balões flutuantes -->
+    <div id="planosSalvosWrap" style="display:none">
+      <div class="ps-section-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Planos salvos
+      </div>
+      <div id="planosSalvosList" class="planos-baloes"></div>
     </div>
   </div>
 
@@ -170,7 +186,7 @@
       <div id="sliderAlert" class="slider-alert" style="display:none"></div>
     </div>
 
-    <button class="btn-next" onclick="goStep('s4'); calcularPlano()">Ver meu plano de saída →</button>
+    <button class="btn-next" onclick="goStep('s4')">Ver meu plano de saída →</button>
   </div>
 
   <!-- STEP 4 — RESULTADO -->
@@ -192,6 +208,18 @@
     <!-- Ordem de pagamento -->
     <div class="bloco" id="ordemBloco"></div>
 
+    <!-- Salvar plano -->
+    <div class="salvar-plano-wrap" id="salvarPlanoWrap">
+      <div class="salvar-row">
+        <input class="finput salvar-input" type="text" id="planoNome" placeholder="Nome do plano (ex: Plano atual, Cenário conservador...)"/>
+        <button class="btn-salvar" onclick="salvarPlano()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Salvar plano
+        </button>
+      </div>
+      <div class="salvar-hint">Você poderá acessar esse plano direto na tela inicial.</div>
+    </div>
+
     <button class="btn-refazer" onclick="goStep('s1'); resetForm()">↺ Recalcular com outros valores</button>
   </div>
 
@@ -199,6 +227,8 @@
 
 <div class="toast" id="toast"><span id="toastIcon">✅</span><span id="toastMsg">Ok!</span></div>
 
+<link rel="stylesheet" href="tutorial.css"/>
 <script src="plano.js"></script>
+<script src="tutorial.js"></script>
 </body>
 </html>

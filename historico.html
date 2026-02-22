@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <script src="theme.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DebtView — Dívidas Pagas</title>
@@ -25,6 +26,12 @@
       </svg>
       Dívidas Ativas
     </a>
+    <a href="porquinho.html" class="btn btn-ghost" style="text-decoration:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Porquinho
+    </a>
     <button class="btn btn-ghost" onclick="openModal('dataModal')" title="Exportar / Importar dados">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -32,7 +39,12 @@
       </svg>
       Dados
     </button>
-  </div>
+      <a href="configuracoes.html" class="btn btn-ghost" style="text-decoration:none;padding:8px 10px" title="Configurações">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </a></div>
 </header>
 
 <!-- ═══ MOBILE BOTTOM NAV ════════════════════════════ -->
@@ -50,6 +62,12 @@
       </svg>
       Pagas
     </button>
+    <a href="porquinho.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Cofre
+    </a>
     <button class="mobile-nav-btn" onclick="openModal('dataModal')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -227,7 +245,9 @@
   <span id="toastMsg">Ok!</span>
 </div>
 
+<link rel="stylesheet" href="tutorial.css"/>
 <script src="historico.js"></script>
 <script src="dados.js"></script>
+<script src="tutorial.js"></script>
 </body>
 </html>

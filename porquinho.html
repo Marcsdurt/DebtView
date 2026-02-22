@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <script src="theme.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DebtView — Porquinho</title>
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico"/>
+  <meta name="theme-color" content="#0d0d0f"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="theme.css"/>
+  <link rel="stylesheet" href="porquinho.css"/>
+</head>
+<body>
+
+<header>
+  <div class="logo">Debt<span>View</span></div>
+  <div class="header-right">
+    <a href="index.html" class="btn btn-ghost" style="text-decoration:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Dívidas
+    </a>
+    <a href="porquinho.html" class="btn btn-ghost" style="text-decoration:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Porquinho
+    </a>
+      <a href="configuracoes.html" class="btn btn-ghost" style="text-decoration:none;padding:8px 10px" title="Configurações">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </a></div>
+</header>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <a href="index.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+      Dívidas
+    </a>
+    <a href="historico.html" class="mobile-nav-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Pagas
+    </a>
+    <button class="mobile-nav-btn active" disabled style="opacity:.5;cursor:default">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+      </svg>
+      Cofre
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero-section hero-amber">
+    <div class="hero-label" id="motivePhraseLabel">▸ COFRE PESSOAL</div>
+    <div class="piggy-hero-wrap">
+      <div class="piggy-icon-giant" id="piggyIcon">🐷</div>
+      <div>
+        <div class="hero-total amber" id="heroTotal">R$ 0,00</div>
+        <div class="hero-sub" id="heroSub">Seu cofre está vazio — hora de começar!</div>
+      </div>
+    </div>
+    <div class="motive-phrase" id="motivePhrase"></div>
+    <div id="metaProgressWrap" style="display:none">
+      <div class="meta-bar-header">
+        <span class="meta-bar-label">Meta: <span id="metaLabel">—</span></span>
+        <span class="meta-bar-pct" id="metaPct">0%</span>
+      </div>
+      <div class="meta-bar-track">
+        <div class="meta-bar-fill" id="metaBarFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Guardado</div>
+      <div class="stat-value amber" id="statTotal">R$ 0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Sem destino</div>
+      <div class="stat-value accent" id="statLivre">R$ 0</div>
+      <div id="sugestaoAlerta" style="display:none">
+        <div class="alerta-sugestao" id="alerta-sugestao-inner"></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Destinado a dívidas</div>
+      <div class="stat-value green" id="statDestinado">R$ 0</div>
+    </div>
+  </div>
+
+  <!-- AÇÃO -->
+  <div class="section-header">
+    <div class="section-title">Meu Cofre</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn btn-ghost" onclick="openModal('metaModal')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+        </svg>
+        Definir meta
+      </button>
+      <button class="btn btn-amber" onclick="abrirDepositar()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        Depositar
+      </button>
+    </div>
+  </div>
+
+  <div class="debt-list" id="depositList">
+    <div class="empty-state">
+      <div class="empty-state-icon">🐷</div>
+      <h3>Seu cofre está vazio</h3>
+      <p>Cada centavo guardado é um passo pra liberdade financeira. Comece agora!</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL — DEPOSITAR / EDITAR -->
+<div class="overlay" id="depositarModal" onclick="closeOnBackdrop(event,'depositarModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="depositModalTitle">🐷 Guardar dinheiro</div>
+      <button class="icon-btn" onclick="closeModal('depositarModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="deposit-motive" id="depositMotive"></div>
+
+      <div class="form-group">
+        <label class="form-label">Valor</label>
+        <div class="pay-input-wrap" style="margin-top:8px">
+          <span class="pay-currency">R$</span>
+          <input class="form-control" type="number" id="depositValor"
+                 placeholder="0,00" min="0.01" step="0.01"
+                 style="padding-left:40px;font-family:'DM Mono',monospace;font-size:20px;color:var(--amber)"
+                 oninput="onDestinoChange()"/>
+        </div>
+        <div class="pay-quick-btns" style="margin-top:10px" id="quickDepositBtns"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descrição (opcional)</label>
+        <input class="form-control" type="text" id="depositDesc" placeholder="Ex: Guardei do mês de março..."/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Destinar a uma dívida? <span style="color:var(--text-muted)">(opcional)</span></label>
+        <select class="form-control" id="depositDestino" onchange="onDestinoChange()">
+          <option value="">🐷 Deixar no cofre (sem destino)</option>
+        </select>
+        <div class="destino-preview" id="destinoPreview" style="display:none"></div>
+      </div>
+
+      <div class="form-actions" style="margin-top:24px">
+        <button class="btn btn-ghost" onclick="closeModal('depositarModal')">Cancelar</button>
+        <button class="btn btn-amber" onclick="salvarDeposito()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL — DESTINAR -->
+<div class="overlay" id="destinarModal" onclick="closeOnBackdrop(event,'destinarModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">🎯 Destinar valor</div>
+      <button class="icon-btn" onclick="closeModal('destinarModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Destinar para qual dívida?</label>
+        <select class="form-control" id="destinarSelect" onchange="onDestinarChange()"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Valor a destinar</label>
+        <div class="pay-input-wrap" style="margin-top:8px">
+          <span class="pay-currency">R$</span>
+          <input class="form-control" type="number" id="destinarValor" placeholder="0,00" min="0.01" step="0.01"
+                 style="padding-left:40px;font-family:'DM Mono',monospace;font-size:18px;color:var(--green)"
+                 oninput="onDestinarChange()"/>
+        </div>
+      </div>
+
+      <!-- Visualização líquida do destinar -->
+      <div class="destinar-liquid-wrap" id="destinarLiquidWrap" style="display:none"></div>
+
+      <div class="form-actions" style="margin-top:24px">
+        <button class="btn btn-ghost" onclick="closeModal('destinarModal')">Cancelar</button>
+        <button class="btn btn-green" onclick="confirmarDestinar()">Destinar →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL — META -->
+<div class="overlay" id="metaModal" onclick="closeOnBackdrop(event,'metaModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">🎯 Definir meta de economia</div>
+      <button class="icon-btn" onclick="closeModal('metaModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text-dim);font-size:13px;margin-bottom:16px">Defina um valor alvo de economia. O app vai mostrar seu progresso.</p>
+      <div class="form-group">
+        <label class="form-label">Meta (R$)</label>
+        <div class="pay-input-wrap" style="margin-top:8px">
+          <span class="pay-currency">R$</span>
+          <input class="form-control" type="number" id="metaValorInput" placeholder="0,00" min="1" step="0.01"
+                 style="padding-left:40px;font-family:'DM Mono',monospace;font-size:18px;color:var(--amber)"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nome da meta (opcional)</label>
+        <input class="form-control" type="text" id="metaNomeInput" placeholder="Ex: Quitar cartão, Reserva de emergência..."/>
+      </div>
+      <div class="form-actions" style="margin-top:24px">
+        <button class="btn btn-ghost" onclick="limparMeta()">Remover meta</button>
+        <button class="btn btn-amber" onclick="salvarMeta()">Salvar meta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL — RESGATAR -->
+<div class="overlay" id="resgatarModal" onclick="closeOnBackdrop(event,'resgatarModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">💸 Resgatar valor</div>
+      <button class="icon-btn" onclick="closeModal('resgatarModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="resgate-warn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        Mexer no cofre agora? Você chegou até aqui — não desista!
+      </div>
+      <p style="color:var(--text-dim);font-size:13px;margin:16px 0">Informe o motivo e o valor que deseja resgatar.</p>
+      <div class="form-group">
+        <label class="form-label">Motivo</label>
+        <input class="form-control" type="text" id="resgatarMotivo" placeholder="Ex: Emergência, conta inesperada..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Valor</label>
+        <div class="pay-input-wrap" style="margin-top:8px">
+          <span class="pay-currency">R$</span>
+          <input class="form-control" type="number" id="resgatarValor" placeholder="0,00" min="0.01" step="0.01"
+                 style="padding-left:40px;font-family:'DM Mono',monospace;font-size:18px;color:var(--red)"/>
+        </div>
+      </div>
+      <div class="form-actions" style="margin-top:24px">
+        <button class="btn btn-ghost" onclick="closeModal('resgatarModal')">Cancelar</button>
+        <button class="btn" style="background:var(--red);color:#fff" onclick="confirmarResgate()">Resgatar mesmo assim</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Ok!</span>
+</div>
+
+<link rel="stylesheet" href="tutorial.css"/>
+<script src="porquinho.js"></script>
+<script src="tutorial.js"></script>
+</body>
+</html>
