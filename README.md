@@ -150,7 +150,7 @@ Nenhum dado é enviado para qualquer servidor. Tudo fica salvo no `localStorage`
 
 ## 📄 Licença
 
-MIT — faça o que quiser, só não culpe a gente se você finalmente ver quanto deve no cartão.
+MIT — faça o que quiser, só não me culpe se você finalmente ver quanto deve no cartão.
 
 ---
 
