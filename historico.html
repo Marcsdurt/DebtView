@@ -13,12 +13,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="historico.css" />
+  <link rel="stylesheet" href="hamburger.css"/>
 </head>
 <body>
 
 <!-- ═══ HEADER ═══════════════════════════════════════ -->
 <header>
   <div class="logo">Debt<span>View</span></div>
+  <button id="hamburgerBtn" class="hamburger-btn" onclick="openDrawer()" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
   <div class="header-right">
     <a href="index.html" class="btn btn-ghost">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -46,37 +50,6 @@
       </svg>
     </a></div>
 </header>
-
-<!-- ═══ MOBILE BOTTOM NAV ════════════════════════════ -->
-<nav class="mobile-nav">
-  <div class="mobile-nav-inner">
-    <a href="index.html" class="mobile-nav-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-      </svg>
-      Ativas
-    </a>
-    <button class="mobile-nav-btn active" disabled style="opacity:0.5;cursor:default">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-      </svg>
-      Pagas
-    </button>
-    <a href="porquinho.html" class="mobile-nav-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
-      </svg>
-      Cofre
-    </a>
-    <button class="mobile-nav-btn" onclick="openModal('dataModal')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-      </svg>
-      Dados
-    </button>
-  </div>
-</nav>
 
 <!-- ═══ MAIN ══════════════════════════════════════════ -->
 <main>
@@ -249,5 +222,65 @@
 <script src="historico.js"></script>
 <script src="dados.js"></script>
 <script src="tutorial.js"></script>
+
+<!-- ═══ HAMBURGER DRAWER ══════════════════════════════ -->
+<div id="hbgOverlay" class="hbg-overlay"></div>
+<div id="hbgDrawer" class="hbg-drawer">
+  <div class="hbg-header">
+    <div class="hbg-logo">Debt<span>View</span></div>
+    <button class="hbg-close" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
+  </div>
+  <nav class="hbg-nav">
+    <div class="hbg-section-label">Navegação</div>
+    <a href="index.html" class="hbg-item">
+      <div class="hbg-item-icon">💳</div>
+      <div class="hbg-item-text">
+        Dívidas
+        <span class="hbg-item-sub">Suas dívidas ativas</span>
+      </div>
+    </a>
+    <a href="historico.html" class="hbg-item active">
+      <div class="hbg-item-icon">🎊</div>
+      <div class="hbg-item-text">
+        Pagas
+        <span class="hbg-item-sub">Histórico de quitações</span>
+      </div>
+    </a>
+    <a href="porquinho.html" class="hbg-item">
+      <div class="hbg-item-icon">🐷</div>
+      <div class="hbg-item-text">
+        Porquinho
+        <span class="hbg-item-sub">Seu cofre pessoal</span>
+      </div>
+    </a>
+    <a href="plano.html" class="hbg-item">
+      <div class="hbg-item-icon">🗺️</div>
+      <div class="hbg-item-text">
+        Plano de Saída
+        <span class="hbg-item-sub">Estratégia de quitação</span>
+      </div>
+    </a>
+    <div class="hbg-divider"></div>
+    <div class="hbg-section-label">Ferramentas</div>
+    <button class="hbg-item" onclick="openDadosDrawer()">
+      <div class="hbg-item-icon">💾</div>
+      <div class="hbg-item-text">
+        Dados
+        <span class="hbg-item-sub">Exportar / importar</span>
+      </div>
+    </button>
+    <a href="configuracoes.html" class="hbg-item">
+      <div class="hbg-item-icon">⚙️</div>
+      <div class="hbg-item-text">
+        Configurações
+        <span class="hbg-item-sub">Tema, tutorial, backup</span>
+      </div>
+    </a>
+  </nav>
+  <div class="hbg-footer">
+    <div class="hbg-footer-ver">DebtView v1.0 · 100% local</div>
+  </div>
+</div>
+<script src="hamburger.js"></script>
 </body>
 </html>

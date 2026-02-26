@@ -11,11 +11,15 @@
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="theme.css"/>
   <link rel="stylesheet" href="plano.css"/>
+  <link rel="stylesheet" href="hamburger.css"/>
 </head>
 <body>
 
 <header>
   <div class="logo">Debt<span>View</span></div>
+  <button id="hamburgerBtn" class="hamburger-btn" onclick="openDrawer()" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
   <div class="header-right">
     <a href="index.html" class="btn btn-ghost" style="text-decoration:none">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,23 +34,6 @@
       </svg>
     </a></div>
 </header>
-
-<nav class="mobile-nav">
-  <div class="mobile-nav-inner">
-    <a href="index.html" class="mobile-nav-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
-      Dívidas
-    </a>
-    <a href="historico.html" class="mobile-nav-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Pagas
-    </a>
-    <button class="mobile-nav-btn" disabled style="opacity:.5;cursor:default">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Plano
-    </button>
-  </div>
-</nav>
 
 <main class="plano-main">
 
@@ -230,5 +217,65 @@
 <link rel="stylesheet" href="tutorial.css"/>
 <script src="plano.js"></script>
 <script src="tutorial.js"></script>
+
+<!-- ═══ HAMBURGER DRAWER ══════════════════════════════ -->
+<div id="hbgOverlay" class="hbg-overlay"></div>
+<div id="hbgDrawer" class="hbg-drawer">
+  <div class="hbg-header">
+    <div class="hbg-logo">Debt<span>View</span></div>
+    <button class="hbg-close" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
+  </div>
+  <nav class="hbg-nav">
+    <div class="hbg-section-label">Navegação</div>
+    <a href="index.html" class="hbg-item">
+      <div class="hbg-item-icon">💳</div>
+      <div class="hbg-item-text">
+        Dívidas
+        <span class="hbg-item-sub">Suas dívidas ativas</span>
+      </div>
+    </a>
+    <a href="historico.html" class="hbg-item">
+      <div class="hbg-item-icon">🎊</div>
+      <div class="hbg-item-text">
+        Pagas
+        <span class="hbg-item-sub">Histórico de quitações</span>
+      </div>
+    </a>
+    <a href="porquinho.html" class="hbg-item">
+      <div class="hbg-item-icon">🐷</div>
+      <div class="hbg-item-text">
+        Porquinho
+        <span class="hbg-item-sub">Seu cofre pessoal</span>
+      </div>
+    </a>
+    <a href="plano.html" class="hbg-item active">
+      <div class="hbg-item-icon">🗺️</div>
+      <div class="hbg-item-text">
+        Plano de Saída
+        <span class="hbg-item-sub">Estratégia de quitação</span>
+      </div>
+    </a>
+    <div class="hbg-divider"></div>
+    <div class="hbg-section-label">Ferramentas</div>
+    <button class="hbg-item" onclick="openDadosDrawer()">
+      <div class="hbg-item-icon">💾</div>
+      <div class="hbg-item-text">
+        Dados
+        <span class="hbg-item-sub">Exportar / importar</span>
+      </div>
+    </button>
+    <a href="configuracoes.html" class="hbg-item">
+      <div class="hbg-item-icon">⚙️</div>
+      <div class="hbg-item-text">
+        Configurações
+        <span class="hbg-item-sub">Tema, tutorial, backup</span>
+      </div>
+    </a>
+  </nav>
+  <div class="hbg-footer">
+    <div class="hbg-footer-ver">DebtView v1.0 · 100% local</div>
+  </div>
+</div>
+<script src="hamburger.js"></script>
 </body>
 </html>
